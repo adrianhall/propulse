@@ -22,6 +22,7 @@ I prefer to use the following technologies:
 
 # Project Layout
 
+* /project is used for project related documentation such as product proposals, technical specifications and implementation plans.
 * /docs is used for project documentation
 * /src is used for source code for the deployable code.
 * /test is used for unit, UI, and integration test code.
