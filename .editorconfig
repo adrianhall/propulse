@@ -138,6 +138,13 @@ csharp_style_unused_value_expression_statement_preference = discard_variable:sil
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace:warning
 
+# Ignore SYSLIB1045: Use GeneratedRegex attribute instead of Regex constructors
+dotnet_diagnostic.SYSLIB1045.severity = none
+
+# IDE0046: Convert to conditional expression.
+# Disabled because 'if' statements can be more readable in some contexts.
+dotnet_diagnostic.IDE0046.severity = none
+
 #### C# Formatting Rules ####
 
 # New line preferences

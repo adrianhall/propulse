@@ -2,4 +2,8 @@
   <PropertyGroup>
     <Description>Core classes and interfaces for the Propulse system.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Propulse.Core.Tests" />
+  </ItemGroup>
 </Project>
