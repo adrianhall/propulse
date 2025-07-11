@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>Core classes and interfaces for the Propulse system.</Description>
+    <Description>The Domain (Clean Arch) project for Propulse.  Holds domain entities, value objects, domain services, business rules and invariants, and domain events.</Description>
   </PropertyGroup>
 
   <ItemGroup>

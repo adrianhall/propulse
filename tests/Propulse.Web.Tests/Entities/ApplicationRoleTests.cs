@@ -1,7 +1,7 @@
 using AwesomeAssertions;
-using Propulse.Persistence.Entities;
+using Propulse.Web.Entities;
 
-namespace Propulse.Persistence.Tests.Entities;
+namespace Propulse.Web.Tests.Entities;
 
 /// <summary>
 /// Unit tests for the ApplicationRole entity class.
@@ -187,7 +187,7 @@ public class ApplicationRoleTests
         var role = new ApplicationRole();
 
         // Assert
-        role.ConcurrencyStamp.Should().BeNull("ConcurrencyStamp is null by default in IdentityRole");
+        role.ConcurrencyStamp.Should().NotBeNull("ConcurrencyStamp should not be null by default");
     }
 
     [Fact]

@@ -27,5 +27,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Propulse.Core\Propulse.Core.csproj" />
   </ItemGroup>
-
 </Project>

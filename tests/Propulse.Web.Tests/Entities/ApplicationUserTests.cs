@@ -1,8 +1,7 @@
-using System;
 using AwesomeAssertions;
-using Propulse.Persistence.Entities;
+using Propulse.Web.Entities;
 
-namespace Propulse.Persistence.Tests.Entities;
+namespace Propulse.Web.Tests.Entities;
 
 /// <summary>
 /// Unit tests for the ApplicationUser entity class.

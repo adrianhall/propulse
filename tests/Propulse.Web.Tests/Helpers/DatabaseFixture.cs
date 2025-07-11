@@ -1,7 +1,6 @@
 ﻿using DotNet.Testcontainers.Builders;
 using Microsoft.Extensions.Logging.Abstractions;
 using Propulse.Migrations;
-using System.Text;
 using Testcontainers.PostgreSql;
 
 namespace Propulse.Web.Tests.Helpers;
@@ -85,7 +84,7 @@ namespace Propulse.Web.Tests.Helpers;
 /// }
 /// </code>
 /// </example>
-/// <seealso cref="SecurityDbContext"/>
+/// <seealso cref="Propulse.Web.Persistence.SecurityDbContext"/>
 /// <seealso cref="MigrationService"/>
 /// <seealso cref="IAsyncLifetime"/>
 public class DatabaseFixture : IAsyncLifetime
@@ -194,4 +193,47 @@ public class DatabaseFixture : IAsyncLifetime
     /// </code>
     /// </example>
     public string ConnectionString { get => container.GetConnectionString(); }
+
+    /// <summary>
+    /// Executes a SQL query against the test database and returns the results.
+    /// </summary>
+    /// <param name="sql">The SQL statement to execute.</param>
+    /// <param name="parameters">Optional parameters to substitute in the SQL statement.</param>
+    /// <returns>A list of rows, where each row is represented as a dictionary of column names to values.</returns>
+    /// <remarks>
+    /// This method provides a convenient way to execute SQL queries during tests and examine the results.
+    /// Parameters are substituted using PostgreSQL's parameterized query format (@paramName).
+    /// The method handles type conversion and null values appropriately.
+    /// </remarks>
+    /// <exception cref="InvalidOperationException">Thrown when the container is not started or the SQL execution fails.</exception>
+    public List<Dictionary<string, object?>> Query(string sql, params (string, object?)[] parameters)
+    {
+        using var connection = new Npgsql.NpgsqlConnection(ConnectionString);
+        connection.Open();
+
+        using var command = new Npgsql.NpgsqlCommand(sql, connection);
+
+        // Add parameters to the command
+        foreach (var (name, value) in parameters)
+        {
+            command.Parameters.AddWithValue(name, value ?? DBNull.Value);
+        }
+
+        var results = new List<Dictionary<string, object?>>();
+
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            var row = new Dictionary<string, object?>();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                var columnName = reader.GetName(i);
+                var value = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                row[columnName] = value;
+            }
+            results.Add(row);
+        }
+
+        return results;
+    }
 }

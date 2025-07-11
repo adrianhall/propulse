@@ -2,7 +2,7 @@
 
 namespace Propulse.Web.Tests;
 
-[Collection(WebServiceCollection.Name)]
+[Collection(SerializedCollection.Name)]
 public class SmokeTests(WebServiceFixture fixture) : IClassFixture<WebServiceFixture>
 {
     [Fact]

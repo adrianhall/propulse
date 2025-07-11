@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Propulse.Core;
-using Propulse.Persistence.Entities;
+using Propulse.Web.Entities;
 
-namespace Propulse.Persistence;
+namespace Propulse.Web.Persistence;
 
 /// <summary>
 /// Entity Framework Core database context for ASP.NET Core Identity authentication and authorization.

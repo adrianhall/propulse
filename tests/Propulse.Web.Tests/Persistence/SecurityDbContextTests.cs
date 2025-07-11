@@ -1,15 +1,16 @@
 using AwesomeAssertions;
 using Microsoft.EntityFrameworkCore;
-using Propulse.Persistence.Entities;
-using Propulse.Persistence.Tests.Helpers;
+using Propulse.Web.Entities;
+using Propulse.Web.Persistence;
+using Propulse.Web.Tests.Helpers;
 
-namespace Propulse.Persistence.Tests.Integration;
+namespace Propulse.Web.Tests.Persistence;
 
 /// <summary>
 /// Integration tests for SecurityDbContext with ApplicationUser and ApplicationRole.
 /// </summary>
-[Collection("Database")]
-public class SecurityDbContextIntegrationTests(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
+[Collection(SerializedCollection.Name)]
+public class SecurityDbContextTests(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
 {
     #region Helper Methods
 

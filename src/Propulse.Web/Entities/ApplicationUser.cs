@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Propulse.Persistence.Entities;
+namespace Propulse.Web.Entities;
 
 /// <summary>
 /// Represents an application user in the Propulse authentication and authorization system.
@@ -57,7 +57,7 @@ namespace Propulse.Persistence.Entities;
 /// </example>
 /// <seealso cref="ApplicationRole"/>
 /// <seealso cref="SecurityDbContext"/>
-/// <seealso cref="Microsoft.AspNetCore.Identity.IdentityUser{TKey}"/>
+/// <seealso cref="IdentityUser{TKey}"/>
 public class ApplicationUser : IdentityUser<Guid>
 {
     /// <summary>

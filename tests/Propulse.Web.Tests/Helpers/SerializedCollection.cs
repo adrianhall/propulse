@@ -91,7 +91,7 @@
 /// <seealso cref="DatabaseFixture"/>
 /// <seealso cref="CollectionDefinitionAttribute"/>
 [CollectionDefinition(Name, DisableParallelization = true)]
-public class WebServiceCollection
+public class SerializedCollection
 {
     /// <summary>
     /// The name identifier for this test collection, used by test classes to join the collection.
@@ -117,5 +117,5 @@ public class WebServiceCollection
     /// }
     /// </code>
     /// </example>
-    public const string Name = nameof(WebServiceCollection);
+    public const string Name = nameof(SerializedCollection);
 }

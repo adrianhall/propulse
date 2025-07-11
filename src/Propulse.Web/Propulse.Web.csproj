@@ -1,15 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <Description>Propulse web application.</Description>
+    <Description>UI (Clean Arch) project for Propulse.  Holds controllers, views, areas, web-specific concerns (like authentication, authorization attributes), and user interface logic.</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\aspire\Propulse.ServiceDefaults\Propulse.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Propulse.Core\Propulse.Core.csproj" />
-    <ProjectReference Include="..\Propulse.Persistence\Propulse.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>
