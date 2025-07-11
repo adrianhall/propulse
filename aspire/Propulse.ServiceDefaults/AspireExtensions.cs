@@ -9,6 +9,7 @@ using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -19,6 +20,7 @@ namespace Microsoft.Extensions.Hosting;
 /// <remarks>
 /// To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
 /// </remarks>
+[ExcludeFromCodeCoverage(Justification = "This is part of the .NET Aspire framework and is not unit tested directly.")]
 public static class AspireExtensions
 {
     private const string HealthEndpointPath = "/health";
