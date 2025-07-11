@@ -9,8 +9,8 @@ namespace Propulse.Web.Tests.Persistence;
 /// <summary>
 /// Integration tests for SecurityDbContext with ApplicationUser and ApplicationRole.
 /// </summary>
-[Collection(DatabaseCollection.Name)]
-public class SecurityDbContextTests(DatabaseFixture fixture)
+[Collection(SerializedCollection.Name)]
+public class SecurityDbContextTests(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
 {
     #region Helper Methods
 

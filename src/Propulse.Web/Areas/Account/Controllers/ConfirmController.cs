@@ -182,7 +182,6 @@ public class ConfirmController(
     {
         var model = new EmailConfirmationViewModel
         {
-            IsConfirmed = true,
             StatusMessage = message ?? "Your email address has been confirmed successfully.",
             StatusType = type
         };

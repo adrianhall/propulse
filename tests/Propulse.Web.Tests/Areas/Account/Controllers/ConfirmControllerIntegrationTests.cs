@@ -17,23 +17,16 @@ namespace Propulse.Web.Tests.Areas.Account.Controllers;
 /// Tests full HTTP request/response cycles including redirects, form submissions, and email link generation.
 /// </summary>
 [Collection(SerializedCollection.Name)]
-public class ConfirmControllerIntegrationTests
+public class ConfirmControllerIntegrationTests(WebServiceFixture fixture)
 {
-    private readonly WebServiceFixture _fixture;
-    private readonly IBrowsingContext _browsingContext;
-
-    public ConfirmControllerIntegrationTests(WebServiceFixture fixture)
-    {
-        _fixture = fixture;
-        _browsingContext = BrowsingContext.New(Configuration.Default);
-    }
+    private readonly IBrowsingContext _browsingContext = BrowsingContext.New(Configuration.Default);
 
     /// <summary>
     /// Helper method to execute code within a service scope for accessing scoped services like UserManager.
     /// </summary>
     private async Task<T> WithScopeAsync<T>(Func<IServiceProvider, Task<T>> action)
     {
-        using var scope = _fixture.Services.CreateScope();
+        using var scope = fixture.Services.CreateScope();
         return await action(scope.ServiceProvider);
     }
 
@@ -42,7 +35,7 @@ public class ConfirmControllerIntegrationTests
     /// </summary>
     private async Task WithScopeAsync(Func<IServiceProvider, Task> action)
     {
-        using var scope = _fixture.Services.CreateScope();
+        using var scope = fixture.Services.CreateScope();
         await action(scope.ServiceProvider);
     }
 
@@ -50,7 +43,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithValidCode_RedirectsToSuccessPage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
         
         var (code, userId) = await WithScopeAsync(async services =>
         {
@@ -94,7 +87,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithNullCode_RedirectsToStatusPageWithError()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/Email");
@@ -116,7 +109,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithEmptyCode_RedirectsToStatusPageWithError()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/Email?code=");
@@ -134,7 +127,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithInvalidCode_RedirectsToInvalidCodePage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/Email?code=invalid-code-123");
@@ -148,7 +141,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithNonExistentUser_RedirectsToAccountNotFound()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
         
         var code = await WithScopeAsync(services =>
         {
@@ -172,7 +165,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithAlreadyConfirmedUser_RedirectsToSuccessWithInfoMessage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
         
         var code = await WithScopeAsync(async services =>
         {
@@ -209,7 +202,7 @@ public class ConfirmControllerIntegrationTests
     public async Task EmailConfirmation_WithExpiredToken_RedirectsToStatusPageWithError()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
         
         var code = await WithScopeAsync(async services =>
         {
@@ -244,7 +237,7 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_GetRequest_ReturnsFormPage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/Resend");
@@ -278,8 +271,8 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_WithValidEmail_SendsEmailAndShowsSuccessMessage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
-        var emailSender = _fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
+        using var client = fixture.CreateClient();
+        var emailSender = fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
         
         await WithScopeAsync(async services =>
         {
@@ -334,8 +327,8 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_WithNonExistentEmail_ShowsGenericMessage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
-        var emailSender = _fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
+        using var client = fixture.CreateClient();
+        var emailSender = fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
         
         // Set up email capture
         EmailSenderEventArgs? capturedEmailEvent = null;
@@ -377,8 +370,8 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_WithAlreadyConfirmedEmail_ShowsInfoMessage()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
-        var emailSender = _fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
+        using var client = fixture.CreateClient();
+        var emailSender = fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
 
         await WithScopeAsync(async services =>
         {
@@ -434,7 +427,7 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_WithInvalidEmail_ShowsValidationErrors()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Get anti-forgery token
         var getResponse = await client.GetAsync("/Account/Confirm/Resend");
@@ -474,7 +467,7 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_WithoutAntiForgeryToken_ReturnsBadRequest()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Prepare form data without anti-forgery token
         var formData = new List<KeyValuePair<string, string>>
@@ -494,7 +487,7 @@ public class ConfirmControllerIntegrationTests
     public async Task ResendConfirmation_WithInvalidAntiForgeryToken_ReturnsBadRequest()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Prepare form data with invalid anti-forgery token
         var formData = new List<KeyValuePair<string, string>>
@@ -515,7 +508,7 @@ public class ConfirmControllerIntegrationTests
     public async Task StatusPage_WithParameters_DisplaysCorrectContent()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
         var query = new StringBuilder();
         query.Append("?title=").Append(Uri.EscapeDataString("Test Title"));
         query.Append("&message=").Append(Uri.EscapeDataString("Test Message"));
@@ -546,7 +539,7 @@ public class ConfirmControllerIntegrationTests
     public async Task InvalidCodePage_DisplaysCorrectContent()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/InvalidCode");
@@ -569,7 +562,7 @@ public class ConfirmControllerIntegrationTests
     public async Task AccountNotFoundPage_DisplaysCorrectContent()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/AccountNotFound");
@@ -592,7 +585,7 @@ public class ConfirmControllerIntegrationTests
     public async Task SuccessPage_DisplaysCorrectContent()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync("/Account/Confirm/Success");
@@ -617,7 +610,7 @@ public class ConfirmControllerIntegrationTests
     public async Task XssAttacks_AreProperlyEscaped(string maliciousUrl)
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
 
         // Act
         var response = await client.GetAsync(maliciousUrl);
@@ -637,7 +630,7 @@ public class ConfirmControllerIntegrationTests
     public async Task SqlInjectionInCode_DoesNotCompromiseDatabase()
     {
         // Arrange
-        using var client = _fixture.CreateClient();
+        using var client = fixture.CreateClient();
         var maliciousCode = "'; DROP TABLE AspNetUsers; --";
 
         // Act
@@ -668,7 +661,7 @@ public class ConfirmControllerIntegrationTests
         // Arrange
         const string testEmail = "endtoend@example.com";
         const string testPassword = "TestPassword123!";
-        var emailSender = _fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
+        var emailSender = fixture.Services.GetRequiredService<IEmailSender<ApplicationUser>>() as NullEmailSender<ApplicationUser>;
         
         // Track email events throughout the flow
         var emailEvents = new List<EmailSenderEventArgs>();
@@ -690,7 +683,7 @@ public class ConfirmControllerIntegrationTests
         });
 
         // Step 2: User goes to resend confirmation page and submits their email
-        using var resendClient = _fixture.CreateClient();
+        using var resendClient = fixture.CreateClient();
         
         // Get the resend form page
         var resendGetResponse = await resendClient.GetAsync("/Account/Confirm/Resend");
@@ -729,7 +722,7 @@ public class ConfirmControllerIntegrationTests
         emailEvent.LinkOrCode.Should().NotBeEmpty("Confirmation code should be provided");
 
         // Step 4: Simulate user clicking the email link in a different browser/client
-        using var confirmClient = _fixture.CreateClient();
+        using var confirmClient = fixture.CreateClient();
         
         // Use the confirmation link directly - it should work as-is
         var confirmResponse = await confirmClient.GetAsync(emailEvent.LinkOrCode);

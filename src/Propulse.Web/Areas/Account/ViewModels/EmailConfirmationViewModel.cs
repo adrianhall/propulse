@@ -9,11 +9,6 @@ namespace Propulse.Web.Areas.Account.ViewModels;
 public class EmailConfirmationViewModel : EmailConfirmationInputModel
 {
     /// <summary>
-    /// Gets or sets a value indicating whether the confirmation was successful.
-    /// </summary>
-    public bool IsConfirmed { get; set; }
-
-    /// <summary>
     /// Gets or sets the status message to display to the user.
     /// </summary>
     public string? StatusMessage { get; set; }

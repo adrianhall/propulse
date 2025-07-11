@@ -14,7 +14,6 @@ public class EmailConfirmationViewModelTests
 
         // Assert
         viewModel.Code.Should().BeEmpty();
-        viewModel.IsConfirmed.Should().BeFalse();
         viewModel.StatusMessage.Should().BeNull();
         viewModel.StatusType.Should().Be("info");
     }
@@ -33,7 +32,6 @@ public class EmailConfirmationViewModelTests
 
         // Assert
         viewModel.Code.Should().Be(inputModel.Code);
-        viewModel.IsConfirmed.Should().BeFalse();
         viewModel.StatusMessage.Should().BeNull();
         viewModel.StatusType.Should().Be("info");
     }
@@ -43,19 +41,6 @@ public class EmailConfirmationViewModelTests
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() => new EmailConfirmationViewModel(null!));
-    }
-
-    [Fact]
-    public void IsConfirmed_Property_CanBeSetAndRetrieved()
-    {
-        // Arrange
-        var viewModel = new EmailConfirmationViewModel();
-
-        // Act
-        viewModel.IsConfirmed = true;
-
-        // Assert
-        viewModel.IsConfirmed.Should().BeTrue();
     }
 
     [Theory]
@@ -110,14 +95,12 @@ public class EmailConfirmationViewModelTests
 
         // Act
         viewModel.Code = "modified-code";
-        viewModel.IsConfirmed = true;
         viewModel.StatusMessage = "Test message";
         viewModel.StatusType = "success";
 
         // Assert
         inputModel.Code.Should().Be("original-code");
         viewModel.Code.Should().Be("modified-code");
-        viewModel.IsConfirmed.Should().BeTrue();
         viewModel.StatusMessage.Should().Be("Test message");
         viewModel.StatusType.Should().Be("success");
     }
@@ -130,13 +113,11 @@ public class EmailConfirmationViewModelTests
 
         // Act
         viewModel.Code = "test-code-123";
-        viewModel.IsConfirmed = true;
         viewModel.StatusMessage = "Confirmation successful";
         viewModel.StatusType = "success";
 
         // Assert
         viewModel.Code.Should().Be("test-code-123");
-        viewModel.IsConfirmed.Should().BeTrue();
         viewModel.StatusMessage.Should().Be("Confirmation successful");
         viewModel.StatusType.Should().Be("success");
     }
