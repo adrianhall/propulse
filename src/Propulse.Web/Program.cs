@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Propulse.Web.Entities;
 using Propulse.Web.Persistence;
+using Propulse.Web.Services;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Propulse.Web;
@@ -89,6 +90,12 @@ public class Program
             })
             .AddEntityFrameworkStores<SecurityDbContext>()
             .AddDefaultTokenProviders();
+
+        // Transactional email provider.
+        builder.AddTransactionalEmailProvider();
+
+        // Link Service (for the Account Servicing)
+        builder.Services.AddScoped<IResponseLinkService, ResponseLinkService>();
 
         // ASP.NET Core MVC
         builder.Services.AddControllersWithViews();

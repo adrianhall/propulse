@@ -3,7 +3,7 @@
 namespace Propulse.Web.Tests;
 
 [Collection(SerializedCollection.Name)]
-public class SmokeTests(WebServiceFixture fixture) : IClassFixture<WebServiceFixture>
+public class SmokeTests(WebServiceFixture fixture)
 {
     [Fact]
     public async Task GET_Alive_Works()

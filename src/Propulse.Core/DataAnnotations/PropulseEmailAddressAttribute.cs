@@ -27,13 +27,13 @@ public class PropulseEmailAddressAttribute : ValidationAttribute
 
         if (value is not string email || string.IsNullOrWhiteSpace(email))
         {
-            return new ValidationResult("Email address must be a non-empty string.");
+            return new ValidationResult(ErrorMessage ?? "Email address must be a non-empty string.");
         }
 
         var parts = email.Split('@');
         if (parts.Length != 2)
         {
-            return new ValidationResult("Email address must contain exactly one '@' symbol.");
+            return new ValidationResult(ErrorMessage ?? "Email address must contain exactly one '@' symbol.");
         }
 
         var username = parts[0];
@@ -41,12 +41,12 @@ public class PropulseEmailAddressAttribute : ValidationAttribute
 
         if (!IsValidUsername(username))
         {
-            return new ValidationResult("Invalid email username part. It can only contain letters, numbers, dots, dashes, and underscores, and cannot have consecutive dots.");
+            return new ValidationResult(ErrorMessage ?? "Invalid email username part. It can only contain letters, numbers, dots, dashes, and underscores, and cannot have consecutive dots.");
         }
 
         if (!IsValidDomain(domain))
         {
-            return new ValidationResult("Invalid email domain part. It must be a valid domain name with 2 to 6 segments.");
+            return new ValidationResult(ErrorMessage ?? "Invalid email domain part. It must be a valid domain name with 2 to 6 segments.");
         }
 
         return ValidationResult.Success;

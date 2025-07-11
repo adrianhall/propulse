@@ -1,4 +1,8 @@
-﻿using Propulse.Web.Extensions;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Propulse.Web.Entities;
+using Propulse.Web.Extensions;
+using Propulse.Web.Services;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Propulse.Web;
@@ -92,6 +96,37 @@ public static class StartupExtensions
             app.UseHsts();
         }
         return app;
+    }
+
+    /// <summary>
+    /// Registers a transactional email provider for the application based on the current environment.
+    /// In development, registers a no-op email sender; in other environments, throws <see cref="NotImplementedException"/>.
+    /// </summary>
+    /// <typeparam name="TBuilder">The type of the application builder, implementing <see cref="IHostApplicationBuilder"/>.</typeparam>
+    /// <param name="builder">The application builder used to register services.</param>
+    /// <returns>The same <typeparamref name="TBuilder"/> instance for method chaining.</returns>
+    /// <remarks>
+    /// In development, <see cref="NullEmailSender{TUser}"/> is registered as a singleton for <see cref="IEmailSender{ApplicationUser}"/>.
+    /// In production or other environments, transactional email services must be implemented and registered appropriately.
+    /// </remarks>
+    /// <exception cref="NotImplementedException">Thrown if called outside of development environment.</exception>
+    /// <example>
+    /// <code>
+    /// builder.AddTransactionalEmailProvider();
+    /// </code>
+    /// </example>
+    public static TBuilder AddTransactionalEmailProvider<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    {
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddSingleton<IEmailSender<ApplicationUser>, NullEmailSender<ApplicationUser>>();
+        }
+        else
+        {
+            throw new NotImplementedException("Transactional Email Services are not available");
+        }
+
+        return builder;
     }
 
     /// <summary>

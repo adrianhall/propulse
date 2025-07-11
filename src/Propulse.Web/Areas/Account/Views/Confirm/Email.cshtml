@@ -1,0 +1,58 @@
+@model EmailConfirmationViewModel
+@{
+    ViewData["Title"] = "Email Confirmation";
+}
+
+<div class="account-form">
+    <div class="account-form-header">
+        <h2>
+            <i class="bi bi-envelope-check"></i>
+            Email Confirmation
+        </h2>
+    </div>
+
+    <div class="account-form-body">
+        @if (Model.IsConfirmed)
+        {
+            <div class="alert alert-@(Model.StatusType == "info" ? "info" : "success") d-flex align-items-center" role="alert">
+                <i class="bi bi-@(Model.StatusType == "info" ? "info-circle" : "check-circle")-fill me-2"></i>
+                <div>
+                    @Html.Encode(Model.StatusMessage)
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="/Account/Login" class="btn btn-primary me-2">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Sign In to Your Account
+                </a>
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="bi bi-house"></i>
+                    Continue to Application
+                </a>
+            </div>
+        }
+        else
+        {
+            @if (!string.IsNullOrEmpty(Model.StatusMessage))
+            {
+                <div class="alert alert-@(Model.StatusType == "error" ? "danger" : Model.StatusType) d-flex align-items-center" role="alert">
+                    <i class="bi bi-@(Model.StatusType == "error" ? "exclamation-triangle" : Model.StatusType == "success" ? "check-circle" : "info-circle")-fill me-2"></i>
+                    <div>
+                        @Html.Encode(Model.StatusMessage)
+                    </div>
+                </div>
+            }
+            
+            <div class="text-center mt-4">
+                <p class="text-muted">
+                    Having trouble with email confirmation?
+                </p>
+                <a href="@Url.Action("Resend", "Confirm", new { area = "Account" })" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-repeat"></i>
+                    Request New Confirmation Email
+                </a>
+            </div>
+        }
+    </div>
+</div>

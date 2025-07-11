@@ -1,0 +1,2 @@
+# Ignore lib files as they are restored during build.
+lib/

@@ -91,7 +91,7 @@
 /// <seealso cref="DatabaseFixture"/>
 /// <seealso cref="CollectionDefinitionAttribute"/>
 [CollectionDefinition(Name, DisableParallelization = true)]
-public class SerializedCollection
+public class SerializedCollection : ICollectionFixture<WebServiceFixture>
 {
     /// <summary>
     /// The name identifier for this test collection, used by test classes to join the collection.

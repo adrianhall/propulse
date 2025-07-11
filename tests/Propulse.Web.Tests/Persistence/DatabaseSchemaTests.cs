@@ -3,8 +3,8 @@ using Propulse.Web.Tests.Helpers;
 
 namespace Propulse.Web.Tests.Persistence;
 
-[Collection(SerializedCollection.Name)]
-public class DatabaseSchemaTests(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
+[Collection(DatabaseCollection.Name)]
+public class DatabaseSchemaTests(DatabaseFixture fixture)
 {
     #region Table Definitions
     private static readonly Dictionary<string, string> RolesTableDefinition = new()

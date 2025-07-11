@@ -1,0 +1,48 @@
+@model StatusViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="account-form">
+    <div class="account-form-header">
+        <h2>
+            <i class="bi bi-@(Model.StatusType == "error" ? "exclamation-triangle" : Model.StatusType == "success" ? "check-circle" : Model.StatusType == "warning" ? "exclamation-circle" : "info-circle")"></i>
+            @Model.Title
+        </h2>
+    </div>
+
+    <div class="account-form-body">
+        <div class="alert alert-@(Model.StatusType == "error" ? "danger" : Model.StatusType) d-flex align-items-center" role="alert">
+            <i class="bi bi-@(Model.StatusType == "error" ? "exclamation-triangle" : Model.StatusType == "success" ? "check-circle" : Model.StatusType == "warning" ? "exclamation-circle" : "info-circle")-fill me-2"></i>
+            <div>
+                @Html.Encode(Model.Message)
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Details))
+        {
+            <div class="mt-3">
+                <p class="text-muted">
+                    @Html.Encode(Model.Details)
+                </p>
+            </div>
+        }
+
+        <div class="text-center mt-4">
+            @if (!string.IsNullOrEmpty(Model.RedirectUrl))
+            {
+                <a href="@Model.RedirectUrl" class="btn btn-primary">
+                    <i class="bi bi-arrow-right"></i>
+                    @(Model.RedirectText ?? "Continue")
+                </a>
+            }
+            else
+            {
+                <a href="/" class="btn btn-primary">
+                    <i class="bi bi-house"></i>
+                    Return to Application
+                </a>
+            }
+        </div>
+    </div>
+</div>
